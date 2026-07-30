@@ -9,7 +9,7 @@ import cookieParser from "cookie-parser";
 export default class Server {
   constructor() {
     this.app = express();
-    this.PORT = process.env.PORT || 3002;
+    this.PORT = process.env.PORT || 3003;
 
     // Ejecutamos la conexión AQUÍ, cuando el entorno ya cargó
     //conectarDb();
