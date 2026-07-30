@@ -16,28 +16,9 @@ export const obtenerRecetaId = async (req, res) => {
 };
 export const listarRecetas = async (req, res) => {
   try {
-    const{termino,pagina,cantReceta} = req.query
-  
-    const paginanumero = parseInt(pagina)
-    const limite = parseInt(cantReceta)
-    const salto = (paginanumero-1) * limite
-    const query = {}
+    const Recetas = await Recetas.find().populate('categoria', 'nombreCat descripcionCat')
+    res.status(200).json(recetas);    
 
-    if(termino){
-      query.nombreReceta = {$regex:termino,$options:"i"}
-    }
-   
-    const [recetas, cantidadTotal] = await Promise.all ([
-      Receta.find(query).populate('categoria', 'nombreCat  descripcionCat').skip(salto).limit(limite),
-      Receta.countDocuments(query)
-
-    ])
-    res.status(200).json({
-      recetas,
-      cantidadTotal,
-      paginaActual:paginaNumero,
-      totalpaginas:Math.ceil(cantidadTotal / limite)
-    });
   } catch (error) {
     console.error(error);
     res
@@ -47,11 +28,11 @@ export const listarRecetas = async (req, res) => {
 };
 export const crearReceta = async (req, res) => {
   try {
-    const nuevoReceta = new Receta(req.body);
-    await nuevoReceta.save();
+    const nuevaReceta = new Receta(req.body);
+    await nuevaReceta.save();
     res
       .status(201)
-      .json({ mensaje: "La receta fue creado con éxito", nuevoReceta });
+      .json({ mensaje: "La receta fue creada con éxito", nuevaReceta });
   } catch (error) {
     console.error(error);
     res.status(500).json({ mensaje: "Ocurrió un error al crear la receta" });
@@ -59,7 +40,7 @@ export const crearReceta = async (req, res) => {
 };
 export const editarReceta = async (req, res) => {
   try {
-    // 1. Buscamos por el ID que viene en la URL y le pasamos los datos nuevos del req.body
+    // 1. Buscamos por el ID que viene en la URL y le pasamos los datos nuevas del req.body
     // { new: true } sirve para que MongoDB nos devuelva el documento YA modificado
     const recetaActualizado = await Receta.findByIdAndUpdate(req.params.id, req.body, { new: true });
 

@@ -7,12 +7,12 @@ import {
   listarRecetas,
   obtenerRecetaId,
   
-} from "../controllers/recetas.controllers.js";
+} from "../controllers/receta.js";
 import {
   validacionIDReceta,
   validacionReceta,
   validacionRecetaPatch,
-} from "../middlewares/validacionReceta.js";
+} from "../middlewares/validacionReceta.js"; 
 import { autenticador, esAdmin } from "../middlewares/authmiddleware.js";
 //import { esAdmin } from "../controllers/usuario.controllers.js";
 
