@@ -1,0 +1,41 @@
+import express from "express";
+import cors from "cors";
+import morgan from "morgan";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
+import "../database/db.js";
+import router from "../routes/index.route.js";
+import cookieParser from "cookie-parser";
+export default class Server {
+  constructor() {
+    this.app = express();
+    this.PORT = process.env.PORT || 3002;
+
+    // Ejecutamos la conexión AQUÍ, cuando el entorno ya cargó
+    //conectarDb();
+
+    this.middleware();
+    this.route();
+  }
+
+  middleware() {
+    this.app.use(cors());
+    this.app.use(express.json());
+    this.app.use(morgan("dev"));
+    this.app.use(cookieParser());
+
+    const __dirname = dirname(fileURLToPath(import.meta.url));
+    this.app.use(express.static(join(__dirname, "../../public")));
+  }
+  route() {
+    this.app.use("/api", router);
+  }
+
+  Listen() {
+    this.app.listen(this.PORT, () => {
+      console.info(
+        `Servidor activo en el puerto: http://localhost:${this.PORT}`,
+      );
+    });
+  }
+}
