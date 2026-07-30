@@ -24,8 +24,7 @@ const RecetaSchema = new Schema(
     },
     descripcionRecet: {
       type: String,
-      minlength: 10,
-      maxlength: 500,
+      minlength: 500,
       required: true,
     },
   },
