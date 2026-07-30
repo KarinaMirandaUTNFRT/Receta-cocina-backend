@@ -31,7 +31,7 @@ export default class Server {
     this.app.use("/api", router);
   }
 
-  Listen() {
+  listen() {
     this.app.listen(this.PORT, () => {
       console.info(
         `Servidor activo en el puerto: http://localhost:${this.PORT}`,
