@@ -3,9 +3,25 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "description": "Proyecto creado para consultar recetas de cocina",
   "scripts": {
     "start": "node index",
     "dev": "node --env-file .env --watch index"
+  },
+  "keywords": [
+    "middleware",
+    "documentos",
+    "modelos",
+    "endpoint"
+  ],
+   "author": "Karina Miranda",
+  "license": "ISC",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^11.5.2",
+      "onFail": "download"
+    }
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
