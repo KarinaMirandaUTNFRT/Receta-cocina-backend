@@ -18,13 +18,13 @@ const RecetaSchema = new Schema(
         /^https:\/\/.+\.(jpg|jpeg|png|webp|avif|svg)$/.test(valor),
     },
     categoriaRecet: {
-      type: Schema.Types.ObjectId,
+      type: String,
       required: true,
       ref: "categoria",
     },
     descripcionRecet: {
       type: String,
-      minlength: 500,
+      minlength: 100,
       required: true,
     },
   },
