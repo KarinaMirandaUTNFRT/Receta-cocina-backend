@@ -127,6 +127,8 @@ export const registrarUsuario = async (req, res) => {
         .status(409)
         .json({ mensaje: "El email enviado ya esta registrado" });
     }
+    const salt = await bcrypt.genSalt(10);
+    const passwordHash = await bcrypt.hash(password, salt);
     //2- generar un codigo de verificacion
     const codigoVerificacion = Math.floor(
       100000 + Math.random() * 900000,
@@ -148,7 +150,7 @@ export const registrarUsuario = async (req, res) => {
     const usuarioNuevo = await Usuario.create(datosUsuario);
     //5- enviar el mail
     await transporter.sendMail({
-      from: '"Crud Servicios" <no-reply@crud-servicios.com>',
+      from: '"Recetas" <no-reply@Recetas.com>',
       to: datosUsuario.email,
       subject: "🔑 Código de Verificación de Cuenta",
       html: `
@@ -173,7 +175,7 @@ export const registrarUsuario = async (req, res) => {
     res.status(500).json({ mensaje: "Ocurrio un error al registrar usuarios" });
   }
 };
-export const confirmarCodigoVerificacion = async (req, res) => {
+export const verificarCuenta = async (req, res) => {
   try {
     const { email, codigo } = req.body;
     //busco el email
@@ -246,8 +248,8 @@ export const solicitarNuevoCodigo = async (req, res) => {
     });
     //reenvias mail con nuevo codigo
     await transporter.sendMail({
-      from: '"Recetarios" <no-reply@recetarios.com>',
-      to: datosUsuario.email,
+      from: '"Recetarios" <no-reply@Recetarios.com>',
+      to: usuarioBuscado.email,
       subject: "Nuevo codigo para verificacion",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 5px;">
@@ -308,9 +310,12 @@ export const login = async (req, res) => {
       sameSite: "strict",
       maxAge: 3600000,
     });
-    res
-      .status(200)
-      .json({ mensaje: "login exitoso", nombre: usuarioBuscado.nombreUsuario });
+    res.status(200).json({
+      mensaje: "login exitoso",
+      nombre: usuarioBuscado.nombreUsuario,
+      rol: usuarioBuscado.rol,
+      token,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({
