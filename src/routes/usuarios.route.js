@@ -1,7 +1,11 @@
 import { Router } from 'express';
-import { registrarUsuario } from '../controllers/usuario.js';
-import { login} from '../controllers/usuario.js'
-import { verificarCuenta } from '../controllers/usuario.js';
+import { 
+    registrarUsuario,
+    login,
+verificarCuenta,
+solicitarNuevoCodigo
+} from '../controllers/usuario.js';
+
 
 const router = Router();
 
@@ -9,5 +13,6 @@ const router = Router();
 router.post('/', registrarUsuario);
 router.post('/login', login);
 router.post('/verificar-cuenta', verificarCuenta);
+router.post('/nuevo-codigo', solicitarNuevoCodigo);
 
 export default router;
