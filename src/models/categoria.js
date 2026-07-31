@@ -10,12 +10,7 @@ const categoriaSchema = new Schema(
       maxLength: 100,
       trim: true,
     },
-    descripcionCat: {
-      type: String,
-      minLength: 5,
-      maxLength: 250,
-      trim: true,
-    },
+    
   },
   {
     timestamps: true,

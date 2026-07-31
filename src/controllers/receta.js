@@ -16,7 +16,7 @@ export const obtenerRecetaId = async (req, res) => {
 };
 export const listarRecetas = async (req, res) => {
   try {
-    const Recetas = await Recetas.find().populate('categoria', 'nombreCat descripcionCat')
+    const Recetas = await Recetas.find().populate('categoria', 'nombreCat ')
     res.status(200).json(recetas);    
 
   } catch (error) {
