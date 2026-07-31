@@ -34,7 +34,14 @@ const usuarioSchema = new Schema(
         },
       },
     },
-    
+    rol: {
+      type: String,
+      required: true,
+      enum: {
+        values: ["Cliente", "Admin", "cliente", "admin"],
+        default: "cliente",
+      },
+    },
     verificado: {
       type: Boolean,
       default: false,

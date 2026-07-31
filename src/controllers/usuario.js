@@ -246,7 +246,7 @@ export const solicitarNuevoCodigo = async (req, res) => {
     });
     //reenvias mail con nuevo codigo
     await transporter.sendMail({
-      from: '"Crud Servicios" <no-reply@crud-servicios.com>',
+      from: '"Recetarios" <no-reply@recetarios.com>',
       to: datosUsuario.email,
       subject: "Nuevo codigo para verificacion",
       html: `
