@@ -7,13 +7,20 @@ const reglasReceta = [
     .isString()
     .withMessage("El nombre del receta debe ser un string")
     .custom(async (valor, { req }) => {
-      const recetaBuscado = await Receta.findOne({ nombreReceta: valor });
-      console.log(recetaBuscado);
+      
+      
+      const { imagen, descripcion } = req.body;
 
-      if (!recetaBuscado) {
+      
+      const recetaIdentica = await Receta.findOne({
+        nombreReceta: valor,
+        imagen,
+        descripcion,
+      });
+       if (!recetaIdentica) {
         return true;
-      }
-      if (req.params?.id && recetaBuscado._id.toString() === req.params.id) {
+       }  
+      if (req.params?.id && recetaIdentica._id.toString() === req.params.id) {
         return true;
       }
       throw new Error(
