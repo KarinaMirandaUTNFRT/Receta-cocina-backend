@@ -16,18 +16,12 @@ const reglasReceta = [
       if (req.params?.id && recetaBuscado._id.toString() === req.params.id) {
         return true;
       }
-      throw new error(
+      throw new Error(
         "El nombre del receta ya existe en la base de datos, debes crear un nombre nuevo",
       );
     }),
 
-  body("precio")
-    .isNumeric()
-    .withMessage("el precio debe ser un valor numerico")
-    .isFloat({ min: 50 })
-    .withMessage("el precio minimo es de $50 pesos"),
-  
-  body("imagen")
+    body("imagen")
     .isString()
     .withMessage("El nombre del la imagen debe ser un string")
     .matches(/^https:\/\/.+\.(jpg|jpeg|png|webp|avif|svg)$/)
