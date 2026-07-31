@@ -6,7 +6,7 @@ import categoriaRouter from './categoria.route.js';
 const router = Router();
 
 router.use('/usuarios', usuariosRouter);
-router.use("/recetas", recetasRouter);
+router.use("/crear", recetasRouter);
 router.use('/categorias', categoriaRouter);
 
 export default router;
