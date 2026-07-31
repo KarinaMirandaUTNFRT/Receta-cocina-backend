@@ -26,13 +26,7 @@ const reglasReceta = [
     .withMessage("el precio debe ser un valor numerico")
     .isFloat({ min: 50 })
     .withMessage("el precio minimo es de $50 pesos"),
-  //body("categoria")
-    //.isString()
-    //.withMessage("El nombre del receta debe ser un string")
-    //.isIn(["Desarrollo Web", "backend & API", "Consultoria"])
-    //.withMessage(
-      //"la categoria debe sewr alguno de los siguientes valores:'Desarrollo Web','backend & API', 'Consultoria' ",
-    //),
+  
   body("imagen")
     .isString()
     .withMessage("El nombre del la imagen debe ser un string")

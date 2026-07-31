@@ -10,10 +10,6 @@ export default class Server {
   constructor() {
     this.app = express();
     this.PORT = process.env.PORT || 3003;
-
-    // Ejecutamos la conexión AQUÍ, cuando el entorno ya cargó
-    //conectarDb();
-
     this.middleware();
     this.route();
   }
@@ -28,7 +24,7 @@ export default class Server {
     this.app.use(express.static(join(__dirname, "../../public")));
   }
   route() {
-    this.app.use("/api", router);
+    this.app.use("/Recetas", router);
   }
 
   listen() {

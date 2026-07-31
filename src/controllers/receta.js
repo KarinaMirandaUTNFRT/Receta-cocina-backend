@@ -40,16 +40,14 @@ export const crearReceta = async (req, res) => {
 };
 export const editarReceta = async (req, res) => {
   try {
-    // 1. Buscamos por el ID que viene en la URL y le pasamos los datos nuevas del req.body
-    // { new: true } sirve para que MongoDB nos devuelva el documento YA modificado
+  
     const recetaActualizado = await Receta.findByIdAndUpdate(req.params.id, req.body, { new: true });
 
-    // 2. Si el ID no existía en la base de datos, avisamos
+
     if (!recetaActualizado) {
       return res.status(404).json({ mensaje: "No se encontró la receta para editar" });
     }
 
-    // 3. Si todo salió bien, respondemos con éxito y el objeto editada
     res.status(200).json({
       mensaje: "La receta fue editada con éxito",
       recetaActualizado
@@ -62,11 +60,11 @@ export const editarReceta = async (req, res) => {
 };
 export const actualizarParcialReceta = async (req, res) => {
   try {
-    // Mongoose es inteligente: si en req.body solo viene el precio, solo actualiza el precio
+  
     const recetaActualizado = await Receta.findByIdAndUpdate(
       req.params.id, 
       req.body, 
-      { new: true } // Para que devuelva el objeto ya cambiado
+      { new: true } 
     );
 
     if (!recetaActualizado) {
@@ -84,18 +82,17 @@ export const actualizarParcialReceta = async (req, res) => {
 };
 export const borrarReceta = async (req, res) => {
   try {
-    // Buscamos por el ID de la URL y lo eliminamos en el acto
+    
     const recetaEliminado = await Receta.findByIdAndDelete(req.params.id);
 
-    // Si el ID no existía en la base de datos, avisamos
     if (!recetaEliminado) {
       return res.status(404).json({ mensaje: "No se encontró la receta que querés borrar" });
     }
 
-    // Si todo salió bien, respondemos con éxito
+   
     res.status(200).json({
       mensaje: "La receta fue eliminado con éxito",
-      recetaEliminado // Opcional: devolvemos el objeto que se borró
+      recetaEliminado 
     });
   } catch (error) {
     console.error(error);

@@ -31,7 +31,6 @@ export const obtenerUsuarioId = async (req, res) => {
 };
 export const crearUsuario = async (req, res) => {
   try {
-    // Verificamos si el email ya existe antes de intentar guardarlo para evitar el error de Mongoose
     const emailExistente = await Usuario.findOne({ email: req.body.email });
     if (emailExistente) {
       return res
@@ -96,8 +95,8 @@ export const editarParcialUsuario = async (req, res) => {
   try {
     const usuarioActualizado = await Usuario.findByIdAndUpdate(
       req.params.id,
-      { $set: req.body }, // El operador $set de Mongoose asegura que solo se cambie lo enviado
-      { new: true, runValidators: true }, // runValidators hace que respete el enum y reglas del Schema
+      { $set: req.body },
+      { new: true, runValidators: true },
     );
 
     if (!usuarioActualizado) {
@@ -118,7 +117,6 @@ export const editarParcialUsuario = async (req, res) => {
   }
 };
 export const registrarUsuario = async (req, res) => {
-  //1- recibir el req
   try {
     const { nombreUsuario, email, password, rol } = req.body;
     const usuarioExistente = await Usuario.findOne({ email });
@@ -129,12 +127,12 @@ export const registrarUsuario = async (req, res) => {
     }
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(password, salt);
-    //2- generar un codigo de verificacion
+
     const codigoVerificacion = Math.floor(
       100000 + Math.random() * 900000,
     ).toString();
     const fechaExpiracionCodigo = new Date(Date.now() + 15 * 60 * 1000);
-    //3- crear el usuario y enviar por email el codigo
+
     const datosUsuario = {
       nombreUsuario,
       email,
@@ -146,9 +144,8 @@ export const registrarUsuario = async (req, res) => {
       datosUsuario.rol = rol.toLowerCase();
     }
 
-    //4- guardar el dato en el usuario
     const usuarioNuevo = await Usuario.create(datosUsuario);
-    //5- enviar el mail
+
     await transporter.sendMail({
       from: '"Recetas" <no-reply@Recetas.com>',
       to: datosUsuario.email,
@@ -168,7 +165,7 @@ export const registrarUsuario = async (req, res) => {
         </div>
       `,
     });
-    //6- enviar respuesta
+
     res.status(201).json({ mensaje: "El usuario fue creado correctamente" });
   } catch (error) {
     console.error(error);
@@ -178,19 +175,18 @@ export const registrarUsuario = async (req, res) => {
 export const verificarCuenta = async (req, res) => {
   try {
     const { email, codigo } = req.body;
-    //busco el email
+
     const usuarioBuscado = await Usuario.findOne({ email });
     if (!usuarioBuscado) {
       return res
         .status(404)
         .json({ mensaje: "no se ha encontrado el mail del ususario" });
     }
-    //cheuqera si esta verificado el mail
+
     if (usuarioBuscado.verificado) {
       return res.status(400).json({ mensaje: "Este mail ya esta verificado" });
     }
 
-    //chequear tiempo de expiracion
     if (new Date() > usuarioBuscado.fechaExpiracionCodigo) {
       return res.status(400).json({
         memsaje: "El codigo ha expirado, por favor solicita un nuevo codigo",
@@ -202,7 +198,7 @@ export const verificarCuenta = async (req, res) => {
         .status(404)
         .json({ memsaje: "El codigo de verificacion es incorrecto" });
     }
-    //verificamos la cuenta del usuario
+
     await Usuario.findByIdAndUpdate(usuarioBuscado._id, {
       $set: { verificado: true },
       $unset: { codigoVerificacion: 1, fechaExpiracionCodigo: 1 },
@@ -221,7 +217,7 @@ export const verificarCuenta = async (req, res) => {
 export const solicitarNuevoCodigo = async (req, res) => {
   try {
     const { email } = req.body;
-    //verificar que existe un usuario con el mail enviado
+
     const usuarioBuscado = await Usuario.findOne({ email });
     if (!usuarioBuscado) {
       return res.status(404).json({
@@ -229,7 +225,6 @@ export const solicitarNuevoCodigo = async (req, res) => {
       });
     }
 
-    //verificamos que el usuario aún no fue validado
     if (usuarioBuscado.verificado) {
       return res
         .status(400)
@@ -238,15 +233,14 @@ export const solicitarNuevoCodigo = async (req, res) => {
 
     const codigoVerificacion = Math.floor(
       100000 + Math.random() * 900000,
-    ).toString(); //100000 - 999999
+    ).toString();
     const tiempoExpiracion = new Date(Date.now() + 15 * 60 * 1000);
 
-    //actualizamos el dato en la BD
     await Usuario.findByIdAndUpdate(usuarioBuscado._id, {
       codigoVerificacion,
       fechaExpiracionCodigo: tiempoExpiracion,
     });
-    //reenvias mail con nuevo codigo
+
     await transporter.sendMail({
       from: '"Recetarios" <no-reply@Recetarios.com>',
       to: usuarioBuscado.email,
@@ -296,7 +290,7 @@ export const login = async (req, res) => {
         .status(401)
         .json({ mensaje: "Tu cuenta no fue verificada todavia" });
     }
-    //generar el token
+
     const token = jwt.sign(
       { id: usuarioBuscado._id, rol: usuarioBuscado.rol },
       process.env.JWT_SECRET,

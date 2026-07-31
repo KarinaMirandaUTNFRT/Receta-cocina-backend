@@ -12,7 +12,7 @@ const usuarioSchema = new Schema(
     email: {
       type: String,
       required: true,
-      unique: true, // No permite correos duplicados en la base de datos
+      unique: true,
       lowercase: true,
       trim: true,
       validate: {
@@ -55,7 +55,7 @@ const usuarioSchema = new Schema(
   },
 
   {
-    timestamps: true, //tengo la fecha y hora de creacion y actualizacion
+    timestamps: true,
   },
 );
 usuarioSchema.pre("save", async function () {
@@ -69,7 +69,7 @@ usuarioSchema.pre("save", async function () {
     throw error;
   }
 });
-const Usuario = mongoose.model("usuario", usuarioSchema); //vinculo elusuarioSchema con la DB
+const Usuario = mongoose.model("usuario", usuarioSchema);
 export default Usuario;
 
 import mongoose, { Schema } from "mongoose";

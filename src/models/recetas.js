@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 const RecetaSchema = new Schema(
   {
-      nombreReceta: {
+    nombreReceta: {
       type: String,
       required: true,
       unique: true,
@@ -29,7 +29,7 @@ const RecetaSchema = new Schema(
     },
   },
   {
-    timestamps: true, //tengo la fecha y hora de creacion y actualizacion
+    timestamps: true,
   },
 );
 const Receta = mongoose.model("Receta", RecetaSchema);

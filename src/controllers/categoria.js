@@ -1,11 +1,10 @@
 import Categoria from "../models/categoria.js";
 
-// Crear una nueva categoría
+
 export const crearCategoria = async (req, res) => {
   try {
     const { nombreCategoria } = req.body;
 
-    // Verificar si ya existe
     const categoriaExistente = await Categoria.findOne({ nombreCategoria });
     if (categoriaExistente) {
       return res
@@ -28,7 +27,7 @@ export const crearCategoria = async (req, res) => {
   }
 };
 
-// Obtener todas las categorías
+
 export const listarCategorias = async (req, res) => {
   try {
     const categorias = await Categoria.find();
